@@ -6,7 +6,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import IProduct from "interfaces/models/product"
+import ISolicitation from "interfaces/models/solicitation"
 import formatValue from "../../../../helpers/formatValue"
 
 const styles = (theme: Theme) =>
@@ -49,32 +49,32 @@ const Content = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogContent);
 
-interface PropsShowInfoProduct {
+interface PropsShowInfoSolicitation {
   open: boolean;
-  product: IProduct;
+  solicitation: ISolicitation;
   onClose: () => void;
 }
 
-const InfoProduct: React.FC<PropsShowInfoProduct> = ({open, onClose, product}) => {
+const InfoSolicitation: React.FC<PropsShowInfoSolicitation> = ({open, onClose, solicitation}) => {
 
   return (
     <div>
       <Dialog onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
         <Title id="customized-dialog-title" onClose={onClose}>
-          {product.name}
+          {solicitation.name}
         </Title>
         <Content dividers>
           <Typography align="center" variant="h6" gutterBottom>
-            Informações adicionais sobre {product.name}
+            Informações adicionais sobre {solicitation.name}
           </Typography>
           <Typography gutterBottom>
-            Descrição: {product.description}
+            Descrição: {solicitation.description}
           </Typography>
           <Typography gutterBottom>
-            Quantidade: {Number(product.amount)}
+            Quantidade: {Number(solicitation.amount)}
           </Typography>
           <Typography gutterBottom>
-            Valor: {formatValue(product.value)}
+            Valor: {formatValue(solicitation.value)}
           </Typography>
         </Content>
       </Dialog>
@@ -82,4 +82,4 @@ const InfoProduct: React.FC<PropsShowInfoProduct> = ({open, onClose, product}) =
   );
 }
 
-export default InfoProduct
+export default InfoSolicitation

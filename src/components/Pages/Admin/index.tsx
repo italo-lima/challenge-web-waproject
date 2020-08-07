@@ -10,7 +10,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import DashboardIndexPage from './Dashboard';
 import SamplePage from './Sample';
 import UserIndexPage from './Users';
-import ProductsPage from './Products';
+import SolicitationsPage from './Solicitations';
 
 export const ScrollTopContext = React.createContext<Function>(() => {});
 
@@ -46,7 +46,7 @@ const AdminPage = memo((props: {}) => {
       icon: AccountMultipleIcon
     },
     { path: '/exemplos', display: 'Exemplos', icon: StarIcon },
-    { path: '/produtos', display: 'Produtos', icon: FileDocumentIcon }
+    { path: '/solicitations', display: 'Pedidos', icon: FileDocumentIcon }
   ]);
 
   const scrollTop = useCallback(() => setTimeout(() => mainContent.current.scrollTo(0, 0), 100), []);
@@ -60,7 +60,7 @@ const AdminPage = memo((props: {}) => {
             <Switch>
               <Route path='/exemplos' component={SamplePage} />
               <Route path='/usuarios' component={UserIndexPage} />
-              <Route path='/produtos' component={ProductsPage} />
+              <Route path='/solicitations' component={SolicitationsPage} />
               <Route path='/' component={DashboardIndexPage} />
               <Route render={renderRedirect} />
             </Switch>

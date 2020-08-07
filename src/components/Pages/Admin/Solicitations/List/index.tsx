@@ -10,26 +10,26 @@ import TableWrapper from 'components/Shared/TableWrapper';
 import usePaginationObservable from 'hooks/usePagination';
 import RefreshIcon from 'mdi-react/RefreshIcon';
 import React, { memo, useCallback, useState} from 'react';
-import productService from 'services/product';
-import ListItemProduct from "./ListItemProduct"
-import IProduct from 'interfaces/models/product';
+import solicitationService from 'services/solicitation';
+import ListItemSolicitation from "./ListItemSolicitation"
+import ISolicitation from 'interfaces/models/solicitation';
 
-import InfoProduct from "../InfoProduct"
-import FormProduct from "../FormProduct"
+import InfoSolicitation from "../InfoSolicitation"
+import FormSolicitation from "../FormSolicitation"
 
-const ProductsListPage = memo(() => {
-  const [currentProduct, setCurrentProduct] = useState<IProduct>({} as IProduct)
+const SolicitationsListPage = memo(() => {
+  const [currentSolicitation, setCurrentSolicitation] = useState<ISolicitation>({} as ISolicitation)
   const [showOpened, setShowOpened] = useState(false);
-  const [formProductOpened, setFormProductOpened] = useState(false);
+  const [formSolicitationOpened, setFormSolicitationOpened] = useState(false);
 
   const [params, mergeParams, loading, data, error, , refresh] = usePaginationObservable(
-    params => productService.list(params),
+    params => solicitationService.list(params),
     {orderBy: 'name', orderDirection: 'asc' },
     []
   );
 
-  const onShow = useCallback((product:IProduct) => {
-    setCurrentProduct(product)
+  const onShow = useCallback((solicitation:ISolicitation) => {
+    setCurrentSolicitation(solicitation)
     setShowOpened(true)
   }, [])
 
@@ -37,14 +37,13 @@ const ProductsListPage = memo(() => {
     setShowOpened(false)
   }, [])
 
-  const openFormProduct = useCallback(() => {
-    setFormProductOpened(true)
+  const openFormSolicitation = useCallback(() => {
+    setFormSolicitationOpened(true)
   }, [])
 
   const onCancelForm = useCallback(() => {
-    setFormProductOpened(false)
+    setFormSolicitationOpened(false)
   }, [])
-
 
   const handleRefresh = useCallback(() => refresh(), [refresh]);
   
@@ -52,18 +51,18 @@ const ProductsListPage = memo(() => {
 
   return (
     <>
-      <Toolbar title='Produtos' />
+      <Toolbar title='Pedidos' />
 
       <Card>
         <CardLoader show={loading} />
 
-        <InfoProduct open={showOpened} onClose={onClose} product={currentProduct} />
-        <FormProduct opened={formProductOpened} onCancelForm={onCancelForm}  />
+        <InfoSolicitation open={showOpened} onClose={onClose} solicitation={currentSolicitation} />
+        <FormSolicitation handleRefresh={handleRefresh} opened={formSolicitationOpened} onCancelForm={onCancelForm}  />
 
         <CardContent>
           <Grid>
             <Grid item xs={12} sm={'auto'}>
-              <Button variant='contained' color='primary' onClick={openFormProduct}>
+              <Button variant='contained' color='primary' onClick={openFormSolicitation}>
                 Adicionar
               </Button>
             </Grid>
@@ -123,8 +122,8 @@ const ProductsListPage = memo(() => {
                 hasData={results.length > 0}
                 onTryAgain={refresh}
               />
-              {results.map(product => (
-                <ListItemProduct key={product.id} product={product} onShow={onShow} onDelete={refresh} />
+              {results.map(solicitation => (
+                <ListItemSolicitation key={solicitation.id} solicitation={solicitation} onShow={onShow} onDelete={refresh} />
               ))}
             </TableBody>
           </Table>
@@ -136,4 +135,4 @@ const ProductsListPage = memo(() => {
   );
 });
 
-export default ProductsListPage;
+export default SolicitationsListPage;

@@ -7,15 +7,16 @@ import TextField from 'components/Shared/Fields/Text';
 import Toast from 'components/Shared/Toast';
 import { logError } from 'helpers/rxjs-operators/logError';
 import { useFormikObservable } from 'hooks/useFormikObservable';
-import IProduct from 'interfaces/models/product';
+import ISolicitation from 'interfaces/models/solicitation';
 import React, { memo, useCallback } from 'react';
 import { tap } from 'rxjs/operators';
-import productService from 'services/product';
+import solicitationService from 'services/solicitation';
 import * as yup from 'yup';
 
 interface IProps {
   opened: boolean;
   onCancelForm: () => void;
+  handleRefresh: () => void;
 }
 
 const validationSchema = yup.object().shape({
@@ -36,22 +37,26 @@ const useStyle = makeStyles({
   }
 });
 
-const FormProduct = memo((props: IProps) => {
+const FormSolicitation = memo((props: IProps) => {
   const classes = useStyle(props);
 
-  const formik = useFormikObservable<IProduct>({
+  const formik = useFormikObservable<ISolicitation>({
     validationSchema,
     onSubmit(model) {
       const modelFormatted = {...model, value: Number(model.value), amount: Number(model.amount)}
-      return productService.save(modelFormatted).pipe(
-        tap(product => {
-          Toast.show(`${product.name} foi salvo`);
+      return solicitationService.save(modelFormatted).pipe(
+        tap(solicitation => {
+          Toast.show(`${solicitation.name} foi salvo`);
         }),
         logError(true),
       );
     }
   });
 
+  const handleCloseForm = useCallback(() => {
+    props.onCancelForm()
+    props.handleRefresh()
+  }, [props])
 
   const handleExit = useCallback(() => {
     formik.resetForm();
@@ -88,7 +93,7 @@ const FormProduct = memo((props: IProps) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={props.onCancelForm}>Cancelar</Button>
-          <Button onClick={props.onCancelForm} color='primary' variant='contained' type='submit'>
+          <Button onClick={handleCloseForm} color='primary' variant='contained' type='submit'>
             Salvar
           </Button>
         </DialogActions>
@@ -97,4 +102,4 @@ const FormProduct = memo((props: IProps) => {
   );
 });
 
-export default FormProduct;
+export default FormSolicitation;
